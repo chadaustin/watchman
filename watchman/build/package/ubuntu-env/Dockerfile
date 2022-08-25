@@ -12,6 +12,8 @@ RUN apt-get -y install python3 gcc g++ git libssl-dev curl
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
+RUN cargo --help
+
 # Avoid build output from Watchman's build getting buffered in large
 # chunks, which makes debugging progress tough.
 ENV PYTHONUNBUFFERED=1
