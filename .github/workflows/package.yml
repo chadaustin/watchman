@@ -28,7 +28,7 @@ jobs:
           push: true
           tags: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
 
-  clone-and-build:
+  clone-and-build-and-package:
     needs: docker
     runs-on: ubuntu-latest
     container:
@@ -42,3 +42,6 @@ jobs:
 
       - name: Build Watchman binaries
         run: ./autogen.sh
+
+      - name: Make .deb
+        run: ./watchman/build/package/make-deb.sh
