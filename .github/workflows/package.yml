@@ -26,4 +26,4 @@ jobs:
           build-args: "UBUNTU_VERSION=22.04"
           file: watchman/build/package/ubuntu-env/Dockerfile
           push: true
-          tags: ghcr.io/facebook/watchman/watchman-build-env:latest
+          tags: ghcr.io/chadaustin/watchman/watchman-build-env:latest
