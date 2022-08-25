@@ -28,11 +28,6 @@ jobs:
           push: true
           tags: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
 
-      - name: Test docker image
-        container:
-          image: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
-        run: cargo --help
-
   clone-and-build-and-package:
     needs: docker
     runs-on: ubuntu-latest
