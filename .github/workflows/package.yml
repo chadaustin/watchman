@@ -27,3 +27,15 @@ jobs:
           file: watchman/build/package/ubuntu-env/Dockerfile
           push: true
           tags: ghcr.io/chadaustin/watchman/watchman-build-env:latest
+
+  clone-and-build:
+    needs: docker
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/chadaustin/watchman/watchman-build-env:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Who am I?
+        run: whoami
