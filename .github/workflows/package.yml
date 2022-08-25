@@ -26,13 +26,18 @@ jobs:
           build-args: "UBUNTU_VERSION=22.04"
           file: watchman/build/package/ubuntu-env/Dockerfile
           push: true
-          tags: ${{ format('ghcr.io/{0}/watchman-build-env-2:latest', github.repository) }}
+          tags: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
+
+      - name: Test docker image
+        container:
+          image: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
+        run: cargo --help
 
   clone-and-build-and-package:
     needs: docker
     runs-on: ubuntu-latest
     container:
-      image: ${{ format('ghcr.io/{0}/watchman-build-env-2:latest', github.repository) }}
+      image: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
