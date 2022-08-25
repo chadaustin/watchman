@@ -45,6 +45,9 @@ jobs:
       - name: Install system dependencies
         run: ./install-system-packages.sh
 
+      - name: rustup default stable
+        run: rustup default stable
+
       - name: Test cargo
         run: cargo --help
 
