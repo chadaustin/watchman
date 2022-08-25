@@ -23,7 +23,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          build-args: ["UBUNTU_VERSION=22.04"]
+          build-args:
+            UBUNTU_VERSION: "22.04"
           file: watchman/build/package/ubuntu-env/Dockerfile
           push: true
           tags: ghcr.io/facebook/watchman/build-env:latest
