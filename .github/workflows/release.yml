@@ -26,7 +26,7 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
 
-  docker-ubuntu-22:
+  docker-ubuntu-18:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -46,15 +46,14 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          build-args: "UBUNTU_VERSION=22.04"
+          build-args: "UBUNTU_VERSION=18.04"
           file: watchman/build/package/ubuntu-env/Dockerfile
           push: true
           tags: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
 
-  clone-build-package-ubuntu-22:
+  clone-build-package-ubuntu-18:
     needs:
       - prepare
-      - docker-ubuntu-22
     runs-on: ubuntu-latest
     container:
       image: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
@@ -87,7 +86,7 @@ jobs:
         with:
           upload_url: ${{ needs.prepare.outputs.upload_url }}
           asset_path: /_debs/watchman.deb
-          asset_name: watchman_ubuntu22.04_{{ needs.prepare.outputs.release }}.deb
+          asset_name: watchman_ubuntu18.04_${{ needs.prepare.outputs.release }}.deb
           asset_content_type: application/x-deb
   
 
