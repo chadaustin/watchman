@@ -1,8 +1,8 @@
 import sys
 
 DEPENDENCIES_BY_UBUNTU = {
-    "18.04": [],
-    "20.04": [],
+    "18.04": ["libgoogle-glog0v5"],
+    "20.04": ["libgoogle-glog0v5"],
     "22.04": ["libgoogle-glog0v5", "libboost-context1.74.0", "libdouble-conversion3", "libevent-2.1-7", "libsnappy1v5"],
 }
 
