@@ -37,7 +37,10 @@ trap 'rm -rf -- "$PACKAGE_WORKDIR"' EXIT
 
 mkdir -p "$PACKAGE_WORKDIR$PREFIX"
 cp -ar "$BUILT/bin" "$PACKAGE_WORKDIR$PREFIX/bin"
-cp -ar watchman/build/package/watchman-deb/DEBIAN "$PACKAGE_WORKDIR"
+
+find .
+
+cp -ar /__w/watchman/watchman/watchman/build/package/watchman-deb/DEBIAN "$PACKAGE_WORKDIR"
 
 python3 substcontrol.py "$PACKAGE_WORKDIR/DEBIAN/control" "$PACKAGE_VERSION" "$UBUNTU_VERSION"
 
