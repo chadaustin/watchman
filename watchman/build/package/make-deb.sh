@@ -40,6 +40,6 @@ sed -i "s/%VERSION%/$PACKAGE_VERSION/" "$PACKAGE_WORKDIR/DEBIAN/control"
 
 mkdir -p /_debs
 
-DEB_OUTPUT="/_debs/watchman_$PACKAGE_VERSION.deb"
+DEB_OUTPUT="/_debs/watchman.deb"
 
 dpkg-deb -b "$PACKAGE_WORKDIR" "$DEB_OUTPUT"

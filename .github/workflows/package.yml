@@ -3,7 +3,7 @@ name: package
 on: push
 
 jobs:
-  docker:
+  docker-ubuntu:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -28,7 +28,7 @@ jobs:
           push: true
           tags: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
 
-  clone-and-build-and-package:
+  clone-and-build-and-package-ubuntu:
     needs: docker
     runs-on: ubuntu-latest
     container:
