@@ -7,7 +7,6 @@
 cd "$(dirname "$0")"
 cd "$(git rev-parse --show-toplevel)"
 
-
 # Why /usr/local? This .deb does not hold to any rigorous packaging
 # standards (e.g. Debian), and is intended to replace existing ad hoc
 # Watchman installations.
@@ -36,7 +35,7 @@ mkdir -p "$PACKAGE_WORKDIR$PREFIX"
 cp -ar "$BUILT/bin" "$PACKAGE_WORKDIR$PREFIX/bin"
 cp -ar watchman/build/package/watchman-deb/DEBIAN "$PACKAGE_WORKDIR"
 
-sed -i "s/%VERSION%/$PACKAGE_VERSION/" "$PACKAGE_WORKDIR/DEBIAN/control"
+python3 substcontrol.py "$PACKAGE_WORKDIR/DEBIAN/control" "$PACKAGE_VERSION" "$UBUNTU_VERSION"
 
 mkdir -p /_debs
 
