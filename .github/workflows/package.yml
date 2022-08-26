@@ -37,11 +37,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install system dependencies
-        run: ./install-system-packages.sh
-
       - name: rustup default stable
         run: rustup default stable
+
+      - name: Install system dependencies
+        run: ./install-system-packages.sh
 
       - name: Test cargo
         run: cargo --help
