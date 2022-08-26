@@ -77,6 +77,8 @@ jobs:
         run: ./autogen.sh
 
       - name: Make .deb
+        env:
+          UBUNTU_VERSION: 18.04
         run: ./watchman/build/package/make-deb.sh
 
       - name: Upload .deb
