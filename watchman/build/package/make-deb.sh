@@ -26,6 +26,10 @@ set -x
 # We statically link dependencies for packaging purposes.
 rmdir "$BUILT/lib"
 
+# TODO: make a debuginfo package
+strip "$BUILT/bin/watchman"
+strip "$BUILT/bin/watchmanctl"
+
 PACKAGE_VERSION=$("$BUILT/bin/watchman" --version)
 
 PACKAGE_WORKDIR=$(mktemp -d)
