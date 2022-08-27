@@ -55,7 +55,7 @@ find .
 
 cp -ar /__w/watchman/watchman/watchman/build/package/watchman-deb/DEBIAN "$PACKAGE_WORKDIR"
 
-python3 substcontrol.py "$PACKAGE_WORKDIR/DEBIAN/control" "$PACKAGE_VERSION" "$UBUNTU_VERSION"
+python3 /__w/watchman/watchman/watchman/build/package/substcontrol.py "$PACKAGE_WORKDIR/DEBIAN/control" "$PACKAGE_VERSION" "$UBUNTU_VERSION"
 
 mkdir -p /_debs
 
