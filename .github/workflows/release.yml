@@ -57,11 +57,12 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
-      env:
-        # This allows rustup toolchains to survive between container construction and use.
-        # https://github.com/actions/runner/issues/863
-        HOME: /root
     steps:
+      # This allows rustup toolchains to survive between container construction and use.
+      # https://github.com/actions/runner/issues/863
+      - name: Fix HOME
+        run: echo HOME=/root >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v3
 
