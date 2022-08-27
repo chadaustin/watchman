@@ -49,14 +49,15 @@ jobs:
           build-args: "UBUNTU_VERSION=20.04"
           file: watchman/build/package/ubuntu-env/Dockerfile
           push: true
-          tags: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
+          tags: ${{ format('ghcr.io/{0}/watchman-build-env-20:latest', github.repository) }}
 
   clone-build-package-ubuntu-20:
     needs:
       - prepare
+      - docker-ubuntu-20
     runs-on: ubuntu-latest
     container:
-      image: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
+      image: ${{ format('ghcr.io/{0}/watchman-build-env-20:latest', github.repository) }}
     steps:
       # This allows rustup toolchains to survive between container construction and use.
       # https://github.com/actions/runner/issues/863
