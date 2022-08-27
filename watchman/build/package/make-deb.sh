@@ -4,10 +4,19 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
+echo "before"
+find .
+
 cd "$(dirname "$0")"
+
+echo "after cd"
+pwd
+find .
 
 # wat
 cd /__w/watchman/watchman
+pwd
+find .
 
 cd "$(git rev-parse --show-toplevel)"
 
