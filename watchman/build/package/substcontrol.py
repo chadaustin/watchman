@@ -2,7 +2,7 @@ import sys
 
 DEPENDENCIES_BY_UBUNTU = {
     "18.04": ["libgoogle-glog0v5", "libpcre2-8-0", "libdouble-conversion1", "libevent-2.1-6", "libsnappy1v5"],
-    "20.04": ["libgoogle-glog0v5"],
+    "20.04": ["libgoogle-glog0v5", "libboost-context1.71.0", "libdouble-conversion3", "libevent-2.1-7", "libsnappy1v5"],
     "22.04": ["libgoogle-glog0v5", "libboost-context1.74.0", "libdouble-conversion3", "libevent-2.1-7", "libsnappy1v5"],
 }
 
