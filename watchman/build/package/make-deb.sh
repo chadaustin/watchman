@@ -5,6 +5,10 @@
 # LICENSE file in the root directory of this source tree.
 
 cd "$(dirname "$0")"
+
+# wat
+cd /__w/watchman/watchman
+
 cd "$(git rev-parse --show-toplevel)"
 
 # Why /usr/local? This .deb does not hold to any rigorous packaging
