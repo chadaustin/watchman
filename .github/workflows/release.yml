@@ -58,11 +58,11 @@ jobs:
     container:
       image: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
     steps:
+      - name: Fix HOME
+        run: echo HOME=/root >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: rustup default stable
-        run: rustup default stable
 
       - name: Install system dependencies
         run: ./install-system-packages.sh
