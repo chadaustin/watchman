@@ -26,7 +26,7 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
 
-  docker-ubuntu-18:
+  docker-ubuntu-20:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -46,12 +46,12 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          build-args: "UBUNTU_VERSION=18.04"
+          build-args: "UBUNTU_VERSION=20.04"
           file: watchman/build/package/ubuntu-env/Dockerfile
           push: true
           tags: ${{ format('ghcr.io/{0}/watchman-build-env:latest', github.repository) }}
 
-  clone-build-package-ubuntu-18:
+  clone-build-package-ubuntu-20:
     needs:
       - prepare
     runs-on: ubuntu-latest
@@ -77,7 +77,7 @@ jobs:
 
       - name: Make .deb
         env:
-          UBUNTU_VERSION: 18.04
+          UBUNTU_VERSION: 20.04
         run: ./watchman/build/package/make-deb.sh
 
       - name: Upload .deb
@@ -87,7 +87,7 @@ jobs:
         with:
           upload_url: ${{ needs.prepare.outputs.upload_url }}
           asset_path: /_debs/watchman.deb
-          asset_name: watchman_ubuntu18.04_${{ needs.prepare.outputs.release }}.deb
+          asset_name: watchman_ubuntu20.04_${{ needs.prepare.outputs.release }}.deb
           asset_content_type: application/x-deb
   
 
