@@ -226,7 +226,7 @@ jobs:
   clone-build-package-fedora-35:
     needs:
       - prepare
-      - docker-fedora-%UBUNTU_LTS_VERSION%
+      - docker-fedora-35
     runs-on: ubuntu-latest
     container:
       image: "${{ format('ghcr.io/{0}/watchman-build-env-fedora-35:latest', github.repository) }}"
@@ -257,7 +257,7 @@ jobs:
   clone-build-package-fedora-36:
     needs:
       - prepare
-      - docker-fedora-%UBUNTU_LTS_VERSION%
+      - docker-fedora-36
     runs-on: ubuntu-latest
     container:
       image: "${{ format('ghcr.io/{0}/watchman-build-env-fedora-36:latest', github.repository) }}"
