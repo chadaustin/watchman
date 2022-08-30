@@ -6,14 +6,7 @@
 
 cd "$(dirname "$0")"
 
-echo "after cd"
-pwd
-find .
-
-# wat
 cd /__w/watchman/watchman
-pwd
-find .
 
 cd "$(git rev-parse --show-toplevel)"
 
@@ -47,8 +40,6 @@ trap 'rm -rf -- "$PACKAGE_WORKDIR"' EXIT
 
 mkdir -p "$PACKAGE_WORKDIR$PREFIX"
 cp -ar "$BUILT/bin" "$PACKAGE_WORKDIR$PREFIX/bin"
-
-find .
 
 cp -ar /__w/watchman/watchman/watchman/build/package/watchman-deb/DEBIAN "$PACKAGE_WORKDIR"
 

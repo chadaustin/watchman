@@ -6,14 +6,7 @@
 
 cd "$(dirname "$0")"
 
-echo "after cd"
-pwd
-find .
-
-# wat
 cd /__w/watchman/watchman
-pwd
-find .
 
 cd "$(git rev-parse --show-toplevel)"
 
@@ -36,26 +29,16 @@ set -x
 # We statically link dependencies for packaging purposes.
 rmdir "$BUILT/lib"
 
-# TODO: make a debuginfo package
-strip "$BUILT/bin/watchman"
-strip "$BUILT/bin/watchmanctl"
-
 PACKAGE_VERSION=$("$BUILT/bin/watchman" --version)
 
 PACKAGE_WORKDIR=$(mktemp -d)
 trap 'rm -rf -- "$PACKAGE_WORKDIR"' EXIT
 
-mkdir -p "$PACKAGE_WORKDIR$PREFIX"
-cp -ar "$BUILT/bin" "$PACKAGE_WORKDIR$PREFIX/bin"
+ln watchman/build/package/watchman.spec "$PACKAGE_WORKDIR/SPECS/watchman.spec"
 
-find .
+rpmbuild -bb --define "version $PACKAGE_VERSION" --define "prefix $PREFIX/" --define "image $BUILT" "$PACKAGE_WORKDIR/SPECS/watchman.spec"
 
-cp -ar /__w/watchman/watchman/watchman/build/package/watchman-deb/DEBIAN "$PACKAGE_WORKDIR"
+mkdir -p /_rpms
+cp -a "$PACKAGE_WORKDIR/RPMS/x86_64/*.rpm" /_rpms
 
-python3 /__w/watchman/watchman/watchman/build/package/substcontrol.py "$PACKAGE_WORKDIR/DEBIAN/control" "$PACKAGE_VERSION" "$UBUNTU_VERSION"
-
-mkdir -p /_debs
-
-DEB_OUTPUT="/_debs/watchman.deb"
-
-dpkg-deb -b "$PACKAGE_WORKDIR" "$DEB_OUTPUT"
+find /_rpms
