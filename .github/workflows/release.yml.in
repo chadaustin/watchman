@@ -74,7 +74,7 @@ jobs:
           build-args: "FEDORA_VERSION=%FEDORA_STABLE_VERSION%"
           file: watchman/build/package/fedora-env/Dockerfile
           push: true
-          tags: ${{ format('ghcr.io/{0}/watchman-build-env-fedora-%FEDORA_VERSION%:latest', github.repository) }}
+          tags: ${{ format('ghcr.io/{0}/watchman-build-env-fedora-%FEDORA_STABLE_VERSION%:latest', github.repository) }}
 
   clone-build-package-ubuntu-%UBUNTU_LTS_VERSION%:
     needs:
