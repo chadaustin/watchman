@@ -31,7 +31,9 @@ fn parse_pattern(pattern: &String) -> Option<(Pattern, Vec<&'static str>)> {
             Box::new(move |p: &str, s: &str| {
                 p.replace("%FEDORA_STABLE_VERSION%", s)
             }),
-            vec!("35", "36"),
+            // TODO: enable 35 by setting FIND_LIBRARY_USE_LIB64_PATHS
+            // for zstd
+            vec!("36"),
         ))
     } else {
         None
