@@ -119,7 +119,7 @@ jobs:
   clone-build-package-fedora-%FEDORA_STABLE_VERSION%:
     needs:
       - prepare
-      - docker-fedora-%UBUNTU_LTS_VERSION%
+      - docker-fedora-%FEDORA_STABLE_VERSION%
     runs-on: ubuntu-latest
     container:
       image: ${{ format('ghcr.io/{0}/watchman-build-env-fedora-%FEDORA_STABLE_VERSION%:latest', github.repository) }}
