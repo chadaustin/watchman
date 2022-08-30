@@ -59,5 +59,3 @@ for rpm in "$(ls $PACKAGE_WORKDIR/RPMS/x86_64/*.rpm)"; do
     echo "::set-output rpm_name=$(basename $rpm)"
     break
 done
-
-echo "::set-output rpm_path=
