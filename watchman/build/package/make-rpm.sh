@@ -34,11 +34,30 @@ PACKAGE_VERSION=$("$BUILT/bin/watchman" --version)
 PACKAGE_WORKDIR=$(mktemp -d)
 trap 'rm -rf -- "$PACKAGE_WORKDIR"' EXIT
 
-ln watchman/build/package/watchman.spec "$PACKAGE_WORKDIR/SPECS/watchman.spec"
+SPECS="$PACKAGE_WORKDIR/SPECS"
 
-rpmbuild -bb --define "version $PACKAGE_VERSION" --define "prefix $PREFIX/" --define "image $BUILT" "$PACKAGE_WORKDIR/SPECS/watchman.spec"
+mkdir -p "$SPECS"
+
+cp watchman/build/package/watchman.spec "$SPECS/watchman.spec"
+
+rpmbuild \
+    -bb \
+    --define "dist .fc$FEDORA_VERSION" \
+    --define "_rpmdir $PACKAGE_WORKDIR/RPMS" \
+    --define "version $PACKAGE_VERSION" \
+    --define "prefix $PREFIX/" \
+    --define "image $BUILT" \
+    "$SPECS/watchman.spec"
 
 mkdir -p /_rpms
 cp -a "$PACKAGE_WORKDIR/RPMS/x86_64/*.rpm" /_rpms
 
 find /_rpms
+
+for rpm in "$(ls $PACKAGE_WORKDIR/RPMS/x86_64/*.rpm)"; do
+    echo "::set-output rpm_path=$rpm"
+    echo "::set-output rpm_name=$(basename $rpm)"
+    break
+done
+
+echo "::set-output rpm_path=

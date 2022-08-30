@@ -76,45 +76,45 @@ jobs:
           push: true
           tags: ${{ format('ghcr.io/{0}/watchman-build-env-fedora-%FEDORA_STABLE_VERSION%:latest', github.repository) }}
 
-  clone-build-package-ubuntu-%UBUNTU_LTS_VERSION%:
-    needs:
-      - prepare
-      - docker-ubuntu-%UBUNTU_LTS_VERSION%
-    runs-on: ubuntu-latest
-    container:
-      image: ${{ format('ghcr.io/{0}/watchman-build-env-ubuntu-%UBUNTU_LTS_VERSION%:latest', github.repository) }}
-    steps:
-      # This allows rustup toolchains to survive between container construction and use.
-      # https://github.com/actions/runner/issues/863
-      - name: Fix HOME
-        run: echo HOME=/root >> $GITHUB_ENV
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install system dependencies
-        run: ./install-system-packages.sh
-
-      - name: Fix dubious ownership
-        run: git config --global --add safe.directory /__w/watchman/watchman
-
-      - name: Build Watchman binaries
-        run: ./autogen.sh
-
-      - name: Make .deb
-        env:
-          UBUNTU_VERSION: "%UBUNTU_LTS_VERSION%.04"
-        run: ./watchman/build/package/make-deb.sh
-
-      - name: Upload .deb
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ needs.prepare.outputs.upload_url }}
-          asset_path: /_debs/watchman.deb
-          asset_name: watchman_ubuntu%UBUNTU_LTS_VERSION%.04_${{ needs.prepare.outputs.release }}.deb
-          asset_content_type: application/x-deb
+#  clone-build-package-ubuntu-%UBUNTU_LTS_VERSION%:
+#    needs:
+#      - prepare
+#      - docker-ubuntu-%UBUNTU_LTS_VERSION%
+#    runs-on: ubuntu-latest
+#    container:
+#      image: ${{ format('ghcr.io/{0}/watchman-build-env-ubuntu-%UBUNTU_LTS_VERSION%:latest', github.repository) }}
+#    steps:
+#      # This allows rustup toolchains to survive between container construction and use.
+#      # https://github.com/actions/runner/issues/863
+#      - name: Fix HOME
+#        run: echo HOME=/root >> $GITHUB_ENV
+#
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      - name: Install system dependencies
+#        run: ./install-system-packages.sh
+#
+#      - name: Fix dubious ownership
+#        run: git config --global --add safe.directory /__w/watchman/watchman
+#
+#      - name: Build Watchman binaries
+#        run: ./autogen.sh
+#
+#      - name: Make .deb
+#        env:
+#          UBUNTU_VERSION: "%UBUNTU_LTS_VERSION%.04"
+#        run: ./watchman/build/package/make-deb.sh
+#
+#      - name: Upload .deb
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        uses: actions/upload-release-asset@v1
+#        with:
+#          upload_url: ${{ needs.prepare.outputs.upload_url }}
+#          asset_path: /_debs/watchman.deb
+#          asset_name: watchman_ubuntu%UBUNTU_LTS_VERSION%.04_${{ needs.prepare.outputs.release }}.deb
+#          asset_content_type: application/x-deb
   
   clone-build-package-fedora-%FEDORA_STABLE_VERSION%:
     needs:
@@ -142,6 +142,7 @@ jobs:
         run: ./autogen.sh
 
       - name: Make .rpm
+        id: make_rpm
         env:
           FEDORA_VERSION: "%FEDORA_STABLE_VERSION%"
         run: ./watchman/build/package/make-rpm.sh
@@ -152,9 +153,9 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.prepare.outputs.upload_url }}
-          asset_path: /_rpms/watchman.rpm
-          asset_name: watchman_fedora%FEDORA_STABLE_VERSION%_${{ needs.prepare.outputs.release }}.rpm
-          asset_content_type: application/x-deb
+          asset_path: ${{ steps.make_rpm.outputs.rpm_path }}
+          asset_name: ${{ steps.make_rpm.outputs.rpm_name }}
+          asset_content_type: application/x-rpm
 
 #  linux-build:
 #    continue-on-error: true
