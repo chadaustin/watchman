@@ -108,7 +108,7 @@ jobs:
           build-args: FEDORA_VERSION=35
           file: watchman/build/package/fedora-env/Dockerfile
           push: true
-          tags: "${{ format('ghcr.io/{0}/watchman-build-env-fedora-%FEDORA_VERSION%:latest', github.repository) }}"
+          tags: "${{ format('ghcr.io/{0}/watchman-build-env-fedora-35:latest', github.repository) }}"
   docker-fedora-36:
     runs-on: ubuntu-latest
     steps:
@@ -129,7 +129,7 @@ jobs:
           build-args: FEDORA_VERSION=36
           file: watchman/build/package/fedora-env/Dockerfile
           push: true
-          tags: "${{ format('ghcr.io/{0}/watchman-build-env-fedora-%FEDORA_VERSION%:latest', github.repository) }}"
+          tags: "${{ format('ghcr.io/{0}/watchman-build-env-fedora-36:latest', github.repository) }}"
   clone-build-package-ubuntu-18:
     needs:
       - prepare
