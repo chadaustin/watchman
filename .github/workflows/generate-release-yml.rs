@@ -17,12 +17,22 @@ use yaml_rust::{Yaml, YamlEmitter, YamlLoader};
 
 type Pattern = Box<dyn Fn(&str, &str) -> String + 'static>;
 
-fn parse_pattern(pattern: &String) -> Option<Pattern> {
-    // TODO: generalize this to multiple variable types
+fn parse_pattern(pattern: &String) -> Option<(Pattern, Vec<&'static str>)> {
+    // TODO: generalize this with an external table or something
     if pattern.contains("%UBUNTU_LTS_VERSION%") {
-        Some(Box::new(move |p: &str, s: &str| {
-            p.replace("%UBUNTU_LTS_VERSION%", s)
-        }))
+        Some((
+            Box::new(move |p: &str, s: &str| {
+                p.replace("%UBUNTU_LTS_VERSION%", s)
+            }),
+            vec!("18", "20", "22"),
+        ))
+    } else if pattern.contains("%FEDORA_STABLE_VERSION%") {
+        Some((
+            Box::new(move |p: &str, s: &str| {
+                p.replace("%FEDORA_STABLE_VERSION%", s)
+            }),
+            vec!("35", "36"),
+        ))
     } else {
         None
     }
@@ -58,8 +68,8 @@ fn expand_value(value: &Yaml) -> Yaml {
             for (key, value) in hm.iter() {
                 //println!("key = {:?}", key);
                 if let Yaml::String(key_str) = key {
-                    if let Some(pat) = parse_pattern(&key_str) {
-                        for substitution in &["18", "20", "22"] {
+                    if let Some((pat, substitutions)) = parse_pattern(&key_str) {
+                        for substitution in substitutions {
                             new.insert(
                                 Yaml::String(pat(&key_str, substitution)),
                                 substitute_value(&pat, &value, substitution),
