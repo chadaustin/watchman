@@ -50,7 +50,7 @@ rpmbuild \
     "$SPECS/watchman.spec"
 
 mkdir -p /_rpms
-cp -a "$PACKAGE_WORKDIR/RPMS/x86_64/*.rpm" /_rpms
+cp -a "$PACKAGE_WORKDIR"/RPMS/x86_64/*.rpm /_rpms
 
 find /_rpms
 
