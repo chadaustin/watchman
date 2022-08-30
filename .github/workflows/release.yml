@@ -45,7 +45,7 @@ jobs:
           build-args: UBUNTU_VERSION=18.04
           file: watchman/build/package/ubuntu-env/Dockerfile
           push: true
-          tags: "${{ format('ghcr.io/{0}/watchman-build-env-18:latest', github.repository) }}"
+          tags: "${{ format('ghcr.io/{0}/watchman-build-env-ubuntu-18:latest', github.repository) }}"
   docker-ubuntu-20:
     runs-on: ubuntu-latest
     steps:
@@ -66,7 +66,7 @@ jobs:
           build-args: UBUNTU_VERSION=20.04
           file: watchman/build/package/ubuntu-env/Dockerfile
           push: true
-          tags: "${{ format('ghcr.io/{0}/watchman-build-env-20:latest', github.repository) }}"
+          tags: "${{ format('ghcr.io/{0}/watchman-build-env-ubuntu-20:latest', github.repository) }}"
   docker-ubuntu-22:
     runs-on: ubuntu-latest
     steps:
@@ -87,14 +87,56 @@ jobs:
           build-args: UBUNTU_VERSION=22.04
           file: watchman/build/package/ubuntu-env/Dockerfile
           push: true
-          tags: "${{ format('ghcr.io/{0}/watchman-build-env-22:latest', github.repository) }}"
+          tags: "${{ format('ghcr.io/{0}/watchman-build-env-ubuntu-22:latest', github.repository) }}"
+  docker-fedora-35:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: "."
+          build-args: FEDORA_VERSION=35
+          file: watchman/build/package/fedora-env/Dockerfile
+          push: true
+          tags: "${{ format('ghcr.io/{0}/watchman-build-env-fedora-%FEDORA_VERSION%:latest', github.repository) }}"
+  docker-fedora-36:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: "."
+          build-args: FEDORA_VERSION=36
+          file: watchman/build/package/fedora-env/Dockerfile
+          push: true
+          tags: "${{ format('ghcr.io/{0}/watchman-build-env-fedora-%FEDORA_VERSION%:latest', github.repository) }}"
   clone-build-package-ubuntu-18:
     needs:
       - prepare
       - docker-ubuntu-18
     runs-on: ubuntu-latest
     container:
-      image: "${{ format('ghcr.io/{0}/watchman-build-env-18:latest', github.repository) }}"
+      image: "${{ format('ghcr.io/{0}/watchman-build-env-ubuntu-18:latest', github.repository) }}"
     steps:
       - name: Fix HOME
         run: echo HOME=/root >> $GITHUB_ENV
@@ -117,7 +159,7 @@ jobs:
         with:
           upload_url: "${{ needs.prepare.outputs.upload_url }}"
           asset_path: /_debs/watchman.deb
-          asset_name: "watchman_ubuntu20.04_${{ needs.prepare.outputs.release }}.deb"
+          asset_name: "watchman_ubuntu18.04_${{ needs.prepare.outputs.release }}.deb"
           asset_content_type: application/x-deb
   clone-build-package-ubuntu-20:
     needs:
@@ -125,7 +167,7 @@ jobs:
       - docker-ubuntu-20
     runs-on: ubuntu-latest
     container:
-      image: "${{ format('ghcr.io/{0}/watchman-build-env-20:latest', github.repository) }}"
+      image: "${{ format('ghcr.io/{0}/watchman-build-env-ubuntu-20:latest', github.repository) }}"
     steps:
       - name: Fix HOME
         run: echo HOME=/root >> $GITHUB_ENV
@@ -156,7 +198,7 @@ jobs:
       - docker-ubuntu-22
     runs-on: ubuntu-latest
     container:
-      image: "${{ format('ghcr.io/{0}/watchman-build-env-22:latest', github.repository) }}"
+      image: "${{ format('ghcr.io/{0}/watchman-build-env-ubuntu-22:latest', github.repository) }}"
     steps:
       - name: Fix HOME
         run: echo HOME=/root >> $GITHUB_ENV
@@ -179,5 +221,5 @@ jobs:
         with:
           upload_url: "${{ needs.prepare.outputs.upload_url }}"
           asset_path: /_debs/watchman.deb
-          asset_name: "watchman_ubuntu20.04_${{ needs.prepare.outputs.release }}.deb"
+          asset_name: "watchman_ubuntu22.04_${{ needs.prepare.outputs.release }}.deb"
           asset_content_type: application/x-deb
