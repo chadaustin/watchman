@@ -121,8 +121,11 @@ jobs:
         run: echo HOME=/root >> $GITHUB_ENV
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Testing steps
+        id: test_step
+        run: "echo \"::set-output name=test_output::./install-system-packages.sh\""
       - name: Install system dependencies
-        run: "./install-system-packages.sh"
+        run: "${{ steps.test_step.outputs.test_output }}"
       - name: Fix dubious ownership
         run: git config --global --add safe.directory /__w/watchman/watchman
       - name: Build Watchman binaries
