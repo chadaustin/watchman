@@ -55,7 +55,7 @@ cp -a "$PACKAGE_WORKDIR"/RPMS/x86_64/*.rpm /_rpms
 find /_rpms
 
 for rpm in "$(ls $PACKAGE_WORKDIR/RPMS/x86_64/*.rpm)"; do
-    echo "::set-output rpm_path=$rpm"
-    echo "::set-output rpm_name=$(basename $rpm)"
+    echo "::set-output name=rpm_path::$rpm"
+    echo "::set-output name=rpm_name::$(basename $rpm)"
     break
 done
