@@ -223,3 +223,65 @@ jobs:
           asset_path: /_debs/watchman.deb
           asset_name: "watchman_ubuntu22.04_${{ needs.prepare.outputs.release }}.deb"
           asset_content_type: application/x-deb
+  clone-build-package-fedora-35:
+    needs:
+      - prepare
+      - docker-fedora-%UBUNTU_LTS_VERSION%
+    runs-on: ubuntu-latest
+    container:
+      image: "${{ format('ghcr.io/{0}/watchman-build-env-fedora-35:latest', github.repository) }}"
+    steps:
+      - name: Fix HOME
+        run: echo HOME=/root >> $GITHUB_ENV
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install system dependencies
+        run: "./install-system-packages.sh"
+      - name: Fix dubious ownership
+        run: git config --global --add safe.directory /__w/watchman/watchman
+      - name: Build Watchman binaries
+        run: "./autogen.sh"
+      - name: Make .rpm
+        env:
+          FEDORA_VERSION: "35"
+        run: "./watchman/build/package/make-rpm.sh"
+      - name: Upload .rpm
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: "${{ needs.prepare.outputs.upload_url }}"
+          asset_path: /_rpms/watchman.rpm
+          asset_name: "watchman_fedora35_${{ needs.prepare.outputs.release }}.rpm"
+          asset_content_type: application/x-deb
+  clone-build-package-fedora-36:
+    needs:
+      - prepare
+      - docker-fedora-%UBUNTU_LTS_VERSION%
+    runs-on: ubuntu-latest
+    container:
+      image: "${{ format('ghcr.io/{0}/watchman-build-env-fedora-36:latest', github.repository) }}"
+    steps:
+      - name: Fix HOME
+        run: echo HOME=/root >> $GITHUB_ENV
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install system dependencies
+        run: "./install-system-packages.sh"
+      - name: Fix dubious ownership
+        run: git config --global --add safe.directory /__w/watchman/watchman
+      - name: Build Watchman binaries
+        run: "./autogen.sh"
+      - name: Make .rpm
+        env:
+          FEDORA_VERSION: "36"
+        run: "./watchman/build/package/make-rpm.sh"
+      - name: Upload .rpm
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: "${{ needs.prepare.outputs.upload_url }}"
+          asset_path: /_rpms/watchman.rpm
+          asset_name: "watchman_fedora36_${{ needs.prepare.outputs.release }}.rpm"
+          asset_content_type: application/x-deb
