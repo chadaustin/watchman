@@ -128,6 +128,7 @@ jobs:
       - name: Build Watchman binaries
         run: "./autogen.sh"
       - name: Make .rpm
+        id: make_rpm
         env:
           FEDORA_VERSION: "36"
         run: "./watchman/build/package/make-rpm.sh"
@@ -137,6 +138,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: "${{ needs.prepare.outputs.upload_url }}"
-          asset_path: /_rpms/watchman.rpm
-          asset_name: "watchman_fedora36_${{ needs.prepare.outputs.release }}.rpm"
-          asset_content_type: application/x-deb
+          asset_path: "${{ steps.make_rpm.outputs.rpm_path }}"
+          asset_name: "${{ steps.make_rpm.outputs.rpm_name }}"
+          asset_content_type: application/x-rpm
