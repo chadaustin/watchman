@@ -1,6 +1,6 @@
 Name: watchman
 Version: %{version}
-Release: 1
+Release: 1%{?dist}
 License: MIT
 Summary: A file watching service
 URL: https://facebook.github.io/watchman/
