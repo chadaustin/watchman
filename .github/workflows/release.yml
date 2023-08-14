@@ -283,7 +283,7 @@ jobs:
   windows-build:
     continue-on-error: true
     needs: prepare
-    runs-on: windows-2019
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
       - name: Export boost environment
