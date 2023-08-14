@@ -137,7 +137,7 @@ class BuildOptions(object):
             # the version of boost in our manifest cannot be built with
             # VS 2019, so we're effectively tied to VS 2017 until we upgrade
             # the boost dependency.
-            for year in ["2017", "2019"]:
+            for year in ["2017", "2019", "2022"]:
                 vcvarsall += glob.glob(
                     os.path.join(
                         os.environ["ProgramFiles(x86)"],
